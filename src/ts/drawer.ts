@@ -206,7 +206,6 @@ class Drawer {
                 }
 
                 shader.u["uRefractionIndex"].value = Parameters.refractionIndex;
-                shader.u["uASETSkybox"].value = isASETSkybox ? 1 : 0;
                 shader.u["uDisplayNormals"].value = Parameters.displayNormals ? 1 : 0;
             } else {
                 shader = this.shaderMulticolor.shader;
@@ -223,6 +222,7 @@ class Drawer {
 
             shader.u["uEyePosition"].value = this.camera.eyePos;
             shader.u["uOrthographic"].value = (Parameters.projection === EProjection.ORTHOGRAPHIC) ? 1 : 0;
+            shader.u["uLightType"].value = Parameters.lightType;
             shader.u["uLightDirection"].value = (Parameters.lightDirection === ELightDirection.DOWNWARD) ? 1 : -1;
             shader.u["uDisplayReflection"].value = Parameters.displayReflection ? 1 : 0;
 
@@ -284,7 +284,7 @@ class Drawer {
             skyboxShader.u["uMVPMatrix"].value = this.mvpMatrix;
             skyboxShader.u["uEyePosition"].value = this.camera.eyePos;
             skyboxShader.u["uOrthographic"].value = (Parameters.projection === EProjection.ORTHOGRAPHIC) ? 1 : 0;
-            skyboxShader.u["uASETSkybox"].value = (Parameters.lightType === ELightType.ASET) ? 1 : 0;
+            skyboxShader.u["uLightType"].value = Parameters.lightType;
             skyboxShader.u["uLightDirection"].value = (Parameters.lightDirection === ELightDirection.DOWNWARD) ? 1 : -1;
             skyboxShader.use();
             skyboxShader.bindUniformsAndAttributes();

@@ -37,8 +37,9 @@ const controlId = {
 };
 
 enum ELightType {
-    WHITE = "white",
-    ASET = "aset",
+    ASET = 0,
+    RINGS = 1,
+    RANDOM = 2,
 }
 
 enum ELightDirection {
@@ -182,7 +183,7 @@ abstract class Parameters {
     }
 
     public static get lightType(): ELightType {
-        return Page.Tabs.getValues(controlId.LIGHT_TYPE_TABS_ID)[0] as ELightType;
+        return +Page.Tabs.getValues(controlId.LIGHT_TYPE_TABS_ID)[0] as ELightType;
     }
     public static get lightDirection(): ELightDirection {
         return Page.Tabs.getValues(controlId.LIGHT_DIRECTION_TABS_ID)[0] as ELightDirection;

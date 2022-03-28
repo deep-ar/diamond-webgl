@@ -265,13 +265,17 @@ const data = {
                     unique: true,
                     options: [
                         {
-                            value: "white",
-                            label: "White",
-                            checked: true,
+                            value: "0",
+                            label: "ASET"
                         },
                         {
-                            value: "aset",
-                            label: "ASET"
+                            value: "1",
+                            label: "Rings",
+                        },
+                        {
+                            value: "2",
+                            label: "Random",
+                            checked: true,
                         },
                     ]
                 },

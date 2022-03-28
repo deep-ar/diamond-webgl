@@ -31,7 +31,7 @@ function bindUniformInt(gl: WebGLRenderingContext, location: WebGLUniformLocatio
     if (Array.isArray(value)) {
         gl.uniform1iv(location, value);
     } else {
-        gl.uniform1iv(location, value);
+        gl.uniform1i(location, value);
     }
 }
 
