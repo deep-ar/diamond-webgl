@@ -9,8 +9,6 @@ uniform float uOrthographic;
 uniform vec3 uAbsorption;
 uniform float uDisplayNormals;
 uniform float uDisplayReflection;
-uniform float uASETSkybox;
-uniform float uLightDirection; // 1 or -1
 uniform float uRefractionIndex;
 
 varying vec3 vPosition;

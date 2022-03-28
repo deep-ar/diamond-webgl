@@ -9,8 +9,6 @@ uniform float uOrthographic;
 uniform vec3 uAbsorption;
 uniform float uDisplayNormals;
 uniform float uDisplayReflection;
-uniform float uASETSkybox;
-uniform float uLightDirection; // 1 or -1
 uniform float uRefractionIndex;
 
 varying vec3 vPosition;
@@ -18,14 +16,13 @@ varying vec3 vNormal;
 
 const int rayDepth = #INJECT(RAY_DEPTH);
 
-#INJECT(FACETS_DEFINITION)// uniform float uLightDirection; // 1 or -1
+#INJECT(FACETS_DEFINITION)uniform float uASETSkybox;
+uniform float uLightDirection; // 1 or -1
 
 float sampleSkyboxMonochrome(const vec3 direction) {
     float z = uLightDirection * direction.z;
     return 0.8 * step(z, 0.975) * (1.0 + step(0.6, z));
 }
-
-// uniform float uASETSkybox;
 
 vec3 sampleSkybox(const vec3 direction) {
     vec3 skybox = vec3(sampleSkyboxMonochrome(direction));
@@ -39,7 +36,6 @@ vec3 sampleSkybox(const vec3 direction) {
 
     return mix(skybox, asetSkybox, uASETSkybox);
 }
-
 float checkNextInternalIntersection(const vec3 planePoint, const vec3 planeNormal, const vec3 position, const vec3 direction, inout float theta, inout vec3 facetNormal) {
     float b = dot(direction, planeNormal);
     if (b > 0.0) {

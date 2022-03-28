@@ -2,8 +2,6 @@ precision lowp float;
 
 uniform vec3 uEyePosition;
 uniform float uOrthographic;
-uniform float uASETSkybox;
-uniform float uLightDirection; // 1 or -1
 
 varying vec3 vPosition;
 

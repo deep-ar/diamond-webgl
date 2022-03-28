@@ -8,7 +8,6 @@ uniform vec3 uEyePosition;
 uniform float uOrthographic;
 uniform vec3 uAbsorption;
 uniform float uDisplayReflection;
-uniform float uLightDirection; // 1 or -1
 uniform vec3 uRefractionIndices;
 
 varying vec3 vPosition;
@@ -18,7 +17,7 @@ const int rayDepth = #INJECT(RAY_DEPTH);
 
 #INJECT(FACETS_DEFINITION)
 
-#include "_skybox-monochrome.frag"
+#include "_skybox.frag"
 
 float checkNextInternalIntersection(const vec3 planePoint, const vec3 planeNormal, const vec3 position, const vec3 direction, inout float theta, inout vec3 facetNormal) {
     float b = dot(direction, planeNormal);
