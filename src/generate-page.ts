@@ -61,6 +61,14 @@ const data = {
                         //     label: "Brilliant cut"
                         // },
                         {
+                            value: "princess.obj",
+                            label: "Princess"
+                        },
+                        {
+                            value: "pc40044.obj",
+                            label: "Free-form"
+                        },
+                        {
                             value: "step_cut.obj",
                             label: "Step cut"
                         },
