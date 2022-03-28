@@ -1,7 +1,9 @@
 uniform int uLightType;
 uniform float uLightDirection; // 1 or -1
+uniform mat2 uSkyboxHorizontalCorrection;
 
 float sampleSkyboxMonochrome(vec3 direction) {
+    direction.xy = uSkyboxHorizontalCorrection * direction.xy;
     direction.z *= uLightDirection;
 
     float value;
