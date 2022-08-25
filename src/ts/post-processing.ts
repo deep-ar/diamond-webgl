@@ -1,7 +1,7 @@
+import * as ShaderSources from "./gl-utils/shader-sources";
 import { VBO } from "./gl-utils/vbo";
 import { LazyShader } from "./lazy-shader";
 import { Parameters } from "./parameters";
-
 
 interface ITexture {
     texture: WebGLTexture;
@@ -35,12 +35,12 @@ class PostProcessing {
 
         this.squareVBO = new VBO(gl, SQUARE, 2, gl.FLOAT, true);
 
-        this.downsizingShader = new LazyShader("post-processing/downsizing.frag", "post-processing/fullscreen.vert", "post-processing downsizing");
-        this.blurShader = new LazyShader("post-processing/blur.frag", "post-processing/fullscreen.vert", "post-processing blur");
+        this.downsizingShader = new LazyShader(ShaderSources.PostProcessingDownsizingFrag, ShaderSources.PostProcessingFullscreenVert, "post-processing downsizing");
+        this.blurShader = new LazyShader(ShaderSources.PostProcessingBlurFrag, ShaderSources.PostProcessingFullscreenVert, "post-processing blur");
         this.blurShader.reset({
             BLUR_INSTRUCTIONS: PostProcessing.buildGlowInstructions1D(3), // || PostProcessing.buildGlowInstructions2D(10),
         });
-        this.compositingShader = new LazyShader("post-processing/compositing.frag", "post-processing/fullscreen.vert", "post-processing downsizing");
+        this.compositingShader = new LazyShader(ShaderSources.PostProcessingCompositingFrag, ShaderSources.PostProcessingFullscreenVert, "post-processing downsizing");
 
         this.fullSizeTexture = this.createTexture();
         this.downsizedTexture = this.createTexture();
@@ -201,3 +201,4 @@ class PostProcessing {
 }
 
 export { PostProcessing };
+

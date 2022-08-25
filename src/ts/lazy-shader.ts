@@ -4,50 +4,36 @@ import * as ShaderManager from "./gl-utils/shader-manager";
 import "./page-interface-generated";
 
 
-enum ELoadingState {
-    NOT_LOADED,
-    LOADING,
-    LOADED,
-}
-
 let shaderIndex = 0;
 
 class LazyShader {
-    private readonly fragmentShaderName: string;
-    private readonly vertexShaderName: string;
+    private readonly fragmentShaderSource: string;
+    private readonly vertexShaderSource: string;
 
     private readonly errorKey: string;
     private readonly errorMessage: string;
 
-    private _shader: Shader;
-    private loadingState: ELoadingState;
+    private _shader: Shader | null = null;
 
-    private injected: { [key: string]: string };
+    private injected: Record<string, string>;
 
-    public constructor(fragmentShaderName: string, vertexShaderName: string, name: string) {
-        this.fragmentShaderName = fragmentShaderName;
-        this.vertexShaderName = vertexShaderName;
+    public constructor(fragmentShaderSource: string, vertexShaderSource: string, name: string) {
+        this.fragmentShaderSource = fragmentShaderSource;
+        this.vertexShaderSource = vertexShaderSource;
         this.errorKey = `shader_fail_${shaderIndex++}`;
-        this.errorMessage = `Failed to load or build the shader '${name}'.`;
-
-        this.loadingState = ELoadingState.NOT_LOADED;
+        this.errorMessage = `Failed to build the shader '${name}'.`;
         this.injected = {};
     }
 
     public get shader(): Shader | null {
-        if (this.loadingState === ELoadingState.NOT_LOADED) {
-            this.requestLoading();
+        if (!this._shader) {
+            this.build();
         }
 
-        if (this._shader) {
-            return this._shader;
-        }
-        return null;
+        return this._shader;
     }
 
-    public reset(newInjected: { [key: string]: string }): void {
-        this.loadingState = ELoadingState.NOT_LOADED;
-
+    public reset(newInjected: Record<string, string>): void {
         this.injected = newInjected;
 
         if (this._shader) {
@@ -56,22 +42,18 @@ class LazyShader {
         }
     }
 
-    private requestLoading(): void {
-        this.loadingState = ELoadingState.LOADING;
-
-        ShaderManager.buildShader({
-            fragmentFilename: this.fragmentShaderName,
-            vertexFilename: this.vertexShaderName,
+    private build(): void {
+        const builtShader = ShaderManager.buildShader({
+            fragmentSource: this.fragmentShaderSource,
+            vertexSource: this.vertexShaderSource,
             injected: this.injected,
-        }, (builtShader: Shader | null) => {
-            this.loadingState = ELoadingState.LOADED;
-
-            if (builtShader !== null) {
-                this._shader = builtShader;
-            } else {
-                Page.Demopage.setErrorMessage(this.errorKey, this.errorMessage);
-            }
         });
+
+        if (builtShader !== null) {
+            this._shader = builtShader;
+        } else {
+            Page.Demopage.setErrorMessage(this.errorKey, this.errorMessage);
+        }
     }
 }
 

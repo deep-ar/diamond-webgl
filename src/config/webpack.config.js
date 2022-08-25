@@ -31,7 +31,19 @@ module.exports = {
                         }
                     }
                 ],
-            }
+            },
+            {
+                test: /\.vert$/,
+                type: 'asset/source',
+            },
+            {
+                test: /\.frag$/,
+                type: 'asset/source',
+            },
+            {
+                test: /\.obj$/,
+                type: 'asset/source',
+            },
         ]
     }
 }

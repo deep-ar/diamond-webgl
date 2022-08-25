@@ -1,79 +1,38 @@
-type LoadCallback = (success: boolean) => void;
+/// <reference types="../types"/>
 
-interface ICachedSource {
-    text: string;
-    pending: boolean;
-    failed: boolean;
-    callbacks: LoadCallback[];
-}
+import PostProcessingBlurFrag from "../../shaders/post-processing/blur.frag";
+import PostProcessingCompositingFrag from "../../shaders/post-processing/compositing.frag";
+import PostProcessingDownsizingFrag from "../../shaders/post-processing/downsizing.frag";
+import PostProcessingFullscreenVert from "../../shaders/post-processing/fullscreen.vert";
 
-const cachedSources: { [id: string]: ICachedSource } = {};
+import NormalsFrag from "../../shaders/normals.frag";
+import RaytracedVolumeFrag from "../../shaders/raytracedVolume.frag";
+import RaytracedVolumeVert from "../../shaders/raytracedVolume.vert";
+import ShaderRawFrag from "../../shaders/shader.frag";
+import ShaderVert from "../../shaders/shader.vert";
+import ShaderMulticolorRawFrag from "../../shaders/shader-multicolor.frag";
+import SkyboxRawFrag from "../../shaders/skybox.frag";
+import SkyboxVert from "../../shaders/skybox.vert";
+import SkyboxPartialFrag from "../../shaders/_skybox.frag";
 
-/* Fetches asynchronously the shader source from server and stores it in cache. */
-function loadSource(filename: string, callback: LoadCallback): void {
-    function callAndClearCallbacks(cached: ICachedSource): void {
-        for (const cachedCallback of cached.callbacks) {
-            cachedCallback(!cached.failed);
-        }
-
-        cached.callbacks = [];
-    }
-
-    if (typeof cachedSources[filename] === "undefined") {
-        cachedSources[filename] = {
-            callbacks: [callback],
-            failed: false,
-            pending: true,
-            text: null,
-        };
-        const cached = cachedSources[filename];
-
-        let url = "./shaders/" + filename;
-        if (typeof Page.version !== "undefined") {
-            url += `?v=${Page.version}`;
-        }
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", url, true);
-        xhr.onload = () => {
-            if (xhr.readyState === 4) {
-                cached.pending = false;
-
-                if (xhr.status === 200) {
-                    cached.text = xhr.responseText;
-                    cached.failed = false;
-                } else {
-                    console.error(`Cannot load '${filename}' shader source: ${xhr.statusText}`);
-                    cached.failed = true;
-                }
-
-                callAndClearCallbacks(cached);
-            }
-        };
-        xhr.onerror = () => {
-            console.error(`Cannot load '${filename}' shader source: ${xhr.statusText}`);
-            cached.pending = false;
-            cached.failed = true;
-            callAndClearCallbacks(cached);
-        };
-
-        xhr.send(null);
-    } else {
-        const cached = cachedSources[filename];
-
-        if (cached.pending === true) {
-            cached.callbacks.push(callback);
-        } else {
-            cached.callbacks = [callback];
-            callAndClearCallbacks(cached);
-        }
-    }
-}
-
-function getSource(filename: string): string {
-    return cachedSources[filename].text;
-}
+const skyboxFrag = SkyboxRawFrag.replace("#include \"_skybox.frag\"", SkyboxPartialFrag);
+const shaderFrag = ShaderRawFrag.replace("#include \"_skybox.frag\"", SkyboxPartialFrag);
+const shaderMulticolorFrag = ShaderMulticolorRawFrag.replace("#include \"_skybox.frag\"", SkyboxPartialFrag);
 
 export {
-    getSource,
-    loadSource,
+    PostProcessingBlurFrag,
+    PostProcessingCompositingFrag,
+    PostProcessingDownsizingFrag,
+    PostProcessingFullscreenVert,
+
+    NormalsFrag,
+    RaytracedVolumeFrag,
+    RaytracedVolumeVert,
+    shaderMulticolorFrag as ShaderMulticolorFrag,
+    shaderFrag as ShaderFrag,
+    ShaderVert,
+
+    skyboxFrag as SkyboxFrag,
+    SkyboxVert,
 };
+

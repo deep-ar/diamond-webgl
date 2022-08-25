@@ -5,6 +5,7 @@ import { Gemstone } from "./gemstone";
 import { OrbitalCamera } from "./orbital-camera";
 import { ELightDirection, ELightType, EProjection, Parameters } from "./parameters";
 import { LazyShader } from "./lazy-shader";
+import * as ShaderSources from "./gl-utils/shader-sources";
 
 import "./page-interface-generated";
 
@@ -82,11 +83,11 @@ class Drawer {
 
         this.geometryVBO = gl.createBuffer();
 
-        this.shader = new LazyShader("shader.frag", "shader.vert", "default shader");
-        this.shaderMulticolor = new LazyShader("shader-multicolor.frag", "shader.vert", "shader with dispersion");
-        this.raytracedVolumeShader = new LazyShader("raytracedVolume.frag", "raytracedVolume.vert", "debug raytraced shader");
-        this.normalsShader = new LazyShader("normals.frag", "shader.vert", "normals shader");
-        this.shadersSkybox = new LazyShader("skybox.frag", "skybox.vert", "skybox shader");
+        this.shader = new LazyShader(ShaderSources.ShaderFrag, ShaderSources.ShaderVert, "default shader");
+        this.shaderMulticolor = new LazyShader(ShaderSources.ShaderMulticolorFrag, ShaderSources.ShaderVert, "shader with dispersion");
+        this.raytracedVolumeShader = new LazyShader(ShaderSources.RaytracedVolumeFrag, ShaderSources.RaytracedVolumeVert, "debug raytraced shader");
+        this.normalsShader = new LazyShader(ShaderSources.NormalsFrag, ShaderSources.ShaderVert, "normals shader");
+        this.shadersSkybox = new LazyShader(ShaderSources.SkyboxFrag, ShaderSources.SkyboxVert, "skybox shader");
 
         this.pMatrix = mat4.create();
         this.mvpMatrix = mat4.create();

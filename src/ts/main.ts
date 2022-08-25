@@ -33,9 +33,8 @@ function main(): void {
     const postProcessing = new PostProcessing(gl);
 
     function loadGemstone(): void {
-        Gemstone.loadGemstone(Parameters.cut, (loadedGemstone: Gemstone) => {
-            drawer.setGemstone(loadedGemstone);
-        });
+        const loadedGemstone = Gemstone.loadGemstone(Parameters.cutName);
+        drawer.setGemstone(loadedGemstone);
     }
     Parameters.addCutChangeObserver(loadGemstone);
     loadGemstone();

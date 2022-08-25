@@ -1,6 +1,8 @@
 import { computeIntersection, computePlaneFromTriangle, computeTriangleNormal, cylindric, IOrientedPlane, IPoint, isInPlane, isInsideVolume, ITriangle, rotateZ } from "./geometry";
 import { Parameters } from "./parameters";
 
+import { Cuts } from "./cuts";
+
 import "./page-interface-generated";
 
 
@@ -15,26 +17,22 @@ const knownGemstones: {
 } = {};
 
 class Gemstone {
-    public static loadGemstone(name: string, callback: (gemstone: Gemstone | null) => unknown): void {
+    public static loadGemstone(name: string): Gemstone {
         if (name === "CUSTOM CUT") {
-            callback(Gemstone.customCut());
-        } else if (typeof knownGemstones[name] !== "undefined") {
-            callback(knownGemstones[name]);
-        } else {
-            const request = new XMLHttpRequest();
-            request.addEventListener("load", () => {
-                if (request.status === 200) {
-                    if (typeof knownGemstones[name] === "undefined") { // maybe it was loaded in the meantime
-                        knownGemstones[name] = Gemstone.fromObj(request.responseText);
-                    }
-                    callback(knownGemstones[name]);
-                } else {
-                    callback(null);
-                }
-            });
-            request.open("GET", `models/${name}?v=${Page.version}`);
-            request.send();
+            return Gemstone.customCut();
+        } else if (typeof knownGemstones[name] === "undefined") {
+            const objString = Cuts[name];
+            if (!objString) {
+                throw new Error(`Unknown cut name "${name}".`);
+            }
+            knownGemstones[name] = Gemstone.fromObj(objString);
         }
+
+        const gemStone = knownGemstones[name];
+        if (!gemStone) {
+            throw new Error(`Unknown gemstone name "${name}".`);
+        }
+        return gemStone;
     }
 
     public static fromObj(input: string): Gemstone {
@@ -336,3 +334,4 @@ class Gemstone {
 }
 
 export { Gemstone };
+

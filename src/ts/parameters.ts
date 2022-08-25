@@ -114,7 +114,7 @@ Page.ColorPicker.addObserver(controlId.GEM_COLOR_PICKER, updateGemColor);
 updateGemColor();
 
 abstract class Parameters {
-    public static get cut(): string {
+    public static get cutName(): string {
         return Page.Picker.getValue(controlId.CUT_PICKER_ID);
     }
 
@@ -233,7 +233,7 @@ abstract class Parameters {
 }
 
 function updateCustomCutSection(): void {
-    Page.Sections.setVisibility("custom-cut-section", Parameters.cut === "CUSTOM CUT");
+    Page.Sections.setVisibility("custom-cut-section", Parameters.cutName === "CUSTOM CUT");
 }
 Parameters.addCutChangeObserver(updateCustomCutSection);
 updateCustomCutSection();
