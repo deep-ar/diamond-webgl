@@ -19,15 +19,15 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
-    "@types/node": "^16.11.11",
-    "fs-extra": "^10.0.0",
-    "shx": "^0.3.3",
-    "ts-loader": "^9.2.6",
-    "ts-node": "^10.4.0",
+    "@types/node": "^18.7.13",
+    "fs-extra": "^10.1.0",
+    "shx": "^0.3.4",
+    "ts-loader": "^9.3.1",
+    "ts-node": "^10.9.1",
     "tslint": "^6.1.3",
-    "typescript": "^4.5.2",
-    "webpack": "^5.64.4",
-    "webpack-cli": "^4.9.1",
+    "typescript": "^4.7.4",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
     "webpage-templates": "github:piellardj/webpage-templates"
   }
 }
