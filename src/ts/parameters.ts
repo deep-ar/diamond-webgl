@@ -12,6 +12,7 @@ const controlId = {
     REFLECTION: "reflection-checkbox-id",
 
     DISPLAY_SKYBOX_CHECKBOX_ID: "display-skybox-checkbox-id",
+    HEAD_SHADOW_RANGE_ID: "head-shadow-range-id",
     BACKGROUND_COLOR_PICKER: "background-color-picker-id",
     PROJECTION_TABS_ID: "projection-tabs-id",
     GEOMETRY_ONLY_CHECKBOX_ID: "only-normals-checkbox-id",
@@ -124,6 +125,11 @@ abstract class Parameters {
 
     public static get displaySkybox(): boolean {
         return Page.Checkbox.isChecked(controlId.DISPLAY_SKYBOX_CHECKBOX_ID);
+    }
+
+    public static get headShadow(): number {
+        const value = Page.Range.getValue(controlId.HEAD_SHADOW_RANGE_ID);
+        return 1 - 0.02 * value;
     }
 
     public static get backgroundColor(): IRGB {
@@ -252,6 +258,12 @@ function updateBackgroundVisibility(): void {
 }
 Page.Checkbox.addObserver(controlId.DISPLAY_SKYBOX_CHECKBOX_ID, updateBackgroundVisibility);
 updateBackgroundVisibility();
+
+function updateLightControlsVisibility(): void {
+    Page.Controls.setVisibility(controlId.HEAD_SHADOW_RANGE_ID, Parameters.lightType === ELightType.RANDOM);
+}
+Page.Tabs.addObserver(controlId.LIGHT_TYPE_TABS_ID, updateLightControlsVisibility);
+updateLightControlsVisibility();
 
 {
     let isInDebug = false;

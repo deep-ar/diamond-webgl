@@ -225,6 +225,7 @@ class Drawer {
             shader.u["uOrthographic"].value = (Parameters.projection === EProjection.ORTHOGRAPHIC) ? 1 : 0;
             shader.u["uLightType"].value = Parameters.lightType;
             shader.u["uLightDirection"].value = (Parameters.lightDirection === ELightDirection.DOWNWARD) ? 1 : -1;
+            shader.u["uHeadShadow"].value = Parameters.headShadow;
             const angle = Math.atan2(this.camera.eyePos[1], this.camera.eyePos[0]);
             shader.u["uSkyboxHorizontalCorrection"].value = [Math.cos(-angle), Math.sin(-angle), -Math.sin(-angle), Math.cos(-angle)]; // inverse rotation
             shader.u["uDisplayReflection"].value = Parameters.displayReflection ? 1 : 0;
@@ -289,6 +290,7 @@ class Drawer {
             skyboxShader.u["uOrthographic"].value = (Parameters.projection === EProjection.ORTHOGRAPHIC) ? 1 : 0;
             skyboxShader.u["uLightType"].value = Parameters.lightType;
             skyboxShader.u["uLightDirection"].value = (Parameters.lightDirection === ELightDirection.DOWNWARD) ? 1 : -1;
+            skyboxShader.u["uHeadShadow"].value = Parameters.headShadow;
             skyboxShader.use();
             skyboxShader.bindUniformsAndAttributes();
             this.gl.drawArrays(this.gl.TRIANGLES, 0, 3 * 2 * 6);

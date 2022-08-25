@@ -310,6 +310,15 @@ const data = {
                     id: "display-skybox-checkbox-id",
                     checked: false,
                 },
+                {
+                    type: Demopage.supportedControls.Range,
+                    title: "Head shadow",
+                    id: "head-shadow-range-id",
+                    min: 0,
+                    max: 1,
+                    value: 1,
+                    step: 0.05
+                },
             ]
         },
         {

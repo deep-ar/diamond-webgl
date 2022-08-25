@@ -1,5 +1,6 @@
 uniform int uLightType;
 uniform float uLightDirection; // 1 or -1
+uniform float uHeadShadow;
 uniform mat2 uSkyboxHorizontalCorrection;
 
 float sampleSkyboxMonochrome(vec3 direction) {
@@ -19,7 +20,7 @@ float sampleSkyboxMonochrome(vec3 direction) {
         value = 1.2 * clamp(value, 0.7, 1.5);
     }
 
-    float headShadow = max(0.2, step(direction.z, 0.98));
+    float headShadow = max(0.2, step(direction.z, uHeadShadow));
     return headShadow * value;
 }
 
