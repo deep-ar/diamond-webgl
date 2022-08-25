@@ -78,6 +78,7 @@ vec3 computeDiamondColor(vec3 currentPoint, vec3 currentDirection, vec3 currentF
         currentPoint += theta * currentDirection;
         currentDirection = reflect(currentDirection, -currentFacetNormal);
     }
+    cumulatedColor += rayStrength * 0.5 * sampleSkybox(currentDirection) * exp(-uAbsorption * totalDepthInside);
 
     vec3 lastNormalAsColor = vec3(0.5 + 0.5 * currentFacetNormal);
     return mix(cumulatedColor, lastNormalAsColor, uDisplayNormals);

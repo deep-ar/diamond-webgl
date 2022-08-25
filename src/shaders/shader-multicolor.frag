@@ -80,6 +80,7 @@ float computeDiamondColor(vec3 currentPoint, vec3 currentDirection, vec3 current
         currentPoint += theta * currentDirection;
         currentDirection = reflect(currentDirection, -currentFacetNormal);
     }
+    cumulatedColor += rayStrength * 0.5 * sampleSkyboxMonochrome(currentDirection) * exp(-absorption * totalDepthInside);
 
     return cumulatedColor;
 }
